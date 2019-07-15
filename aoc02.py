@@ -59,6 +59,7 @@ def solve_part2():
             i = i + 1
     print("O U T P U T :   "+ str(my_output))        
 
-solve_part1()
+if __name__ == '__main__':
+    solve_part1()
 
-solve_part2()
+    solve_part2()
