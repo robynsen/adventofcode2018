@@ -22,16 +22,16 @@ def get_min(my_string: str) -> int:
     my_result = re.findall("\:(\d+)\]", my_string)
     return int(my_result[0])
 
-def get_sleepiest_guard_id(my_sleep_tally: dict) -> int:
-    """Return the ID of the guard with the max cumulative minutes spent asleep """
+def get_sleepiest_guard_id_per_hour(my_sleep_tally: dict) -> int:
+    """Return the ID of the guard with the max cumulative minutes spent asleep across the hour """
     my_result = 0
     max_mins_asleep = 0
     this_mins_asleep = 0
-    for my_key in my_sleep_tally:
-        this_mins_asleep = sum(my_sleep_tally[my_key])
+    for my_guard_id in my_sleep_tally:
+        this_mins_asleep = sum(my_sleep_tally[my_guard_id])        
         if this_mins_asleep > max_mins_asleep:
             max_mins_asleep = this_mins_asleep
-            my_result = int(my_key)
+            my_result = int(my_guard_id)
     return my_result
 
 def get_sleepiest_min(my_sleep_tally: dict, my_guard_id: int) -> int:
@@ -43,6 +43,30 @@ def get_sleepiest_min(my_sleep_tally: dict, my_guard_id: int) -> int:
             max_times_asleep = my_sleep_tally[my_guard_id][i]
             my_result = i
     return my_result
+
+def get_sleepiest_guard_id_per_min(my_sleep_tally: dict) -> int:
+    """Return the ID of the guard with the max number of times sleeping in the same minute """
+    my_result = 0
+    max_mins_asleep = 0
+    this_mins_asleep = 0
+    for my_guard_id in my_sleep_tally:
+        this_mins_asleep = max(my_sleep_tally[my_guard_id])
+        if this_mins_asleep > max_mins_asleep:
+            max_mins_asleep = this_mins_asleep
+            my_result = int(my_guard_id)
+    return my_result
+
+def do_part1(my_sleep_tally: dict):
+    my_id = get_sleepiest_guard_id_per_hour(my_sleep_tally)
+    my_sleepiest_min = get_sleepiest_min(my_sleep_tally, my_id)
+
+    print("P A R T   0 1      O U T P U T :   " + str(my_id * my_sleepiest_min))
+
+def do_part2(my_sleep_tally: dict):
+    my_id = get_sleepiest_guard_id_per_min(my_sleep_tally)
+    my_sleepiest_min = get_sleepiest_min(my_sleep_tally, my_id)
+
+    print("P A R T   0 2      O U T P U T :   " + str(my_id * my_sleepiest_min))
 
 if __name__ == '__main__':
 
@@ -65,7 +89,5 @@ if __name__ == '__main__':
                 for i in range(my_sleep_min, my_wake_min):
                     my_sleep_tally[my_id][i] += 1
 
-    my_id = get_sleepiest_guard_id(my_sleep_tally)
-    my_sleepiest_min = get_sleepiest_min(my_sleep_tally, my_id)
-
-    print("P A R T   0 1      O U T P U T :   " + str(my_id * my_sleepiest_min))
+    do_part1(my_sleep_tally)
+    do_part2(my_sleep_tally)
